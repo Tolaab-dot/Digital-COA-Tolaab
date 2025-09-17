@@ -1,2 +1,730 @@
-# Digital-COA-Tolaab
-This repository hosts a simple and secure digital form built using HTML. It is intended for educational, demo, or internal data collection use. The form is lightweight, easy to integrate into static websites, and fully customizable
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Offer Agreement - Tolaab (Digital Copy)</title>
+    <!-- Component Library Choice: DaisyUI is selected for its flexibility in styling and themeability, allowing for a closer replication of the PDF's static layout and "shape design" while ensuring form elements are functional. Tailwind CSS is used for granular control over layout and spacing. -->
+    <!-- Always use CDN sources with @latest tag -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.min.css" rel="stylesheet" type="text/css">
+    <style>
+        /* Custom CSS Variables for Branding */
+        :root {
+            --brand-primary-purple: #6C34E8; /* Extracted from Tolaab logo in the image */
+            /* This is the URL for the full brand image you want as page body watermark */
+            --tolaab-page-watermark-url: url('https://tolaab.com/wp-content/uploads/2025/06/24242424.png');
+            /* This is the URL for the smaller Tolaab logo used in the header */
+            --tolaab-logo-image-url: url('https://tolaab.com/wp-content/uploads/2025/06/ic_launcher-150x150.png');
+        }
+
+        /* Custom styles to replicate the PDF's visual appearance and provide a "paper" feel */
+        body {
+            font-family: 'Arial', sans-serif; /* Common font for document look */
+            background-color: #f0f0f0; /* Light gray background to distinguish the "paper" */
+            display: flex;
+            flex-direction: column; /* Allow pages to stack */
+            align-items: center;
+            padding: 20px;
+        }
+        .document-page {
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 0; /* Remove padding here as header/footer will manage it */
+            max-width: 800px; /* Simulating A4 width */
+            width: 100%;
+            box-sizing: border-box;
+            line-height: 1.5; /* Standard line height for readability */
+            position: relative; /* Needed for ::before pseudo-element and z-index */
+            overflow: hidden;
+            z-index: 0; /* Ensures pages stack correctly */
+        }
+
+        /* Genius Watermark Effect: The specified image behind each page's content */
+        .document-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--tolaab-page-watermark-url); /* Use the full brand image here */
+            background-repeat: no-repeat;
+            background-position: center; /* Center the full image */
+            background-size: 70%; /* Adjust size for subtle watermark. 'contain' also works well. */
+            opacity: 0.08; /* Very subtle opacity */
+            z-index: -1; /* Place it behind all content on the page */
+            pointer-events: none; /* Allows interaction with elements above it */
+        }
+
+        /* All direct children of .document-page need a higher z-index to appear above the watermark */
+        .document-page > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Bar Styling (Solid Brand Color with Logo) */
+        .page-header-bar {
+            background-color: var(--brand-primary-purple); /* Solid brand color for the header */
+            height: 80px; /* Fixed height for the header */
+            padding: 15px 30px; /* Internal padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Align items vertically in center */
+            margin-bottom: 20px; /* Space below the header before content starts */
+        }
+        .page-header-bar .header-left {
+            display: flex;
+            align-items: center;
+        }
+        .page-header-bar .header-right {
+            display: flex; /* Make it a flex container to align items */
+            align-items: flex-start; /* Align text at the top, consistent with original PDF */
+            text-align: right;
+            flex-direction: column; /* Stack contact info vertically */
+        }
+        .page-header-bar .tolaab-logo {
+            height: 40px; /* Adjust logo height as needed */
+            width: auto;
+        }
+        /* Style for text overlaid on the solid header bar */
+        .page-header-bar .top-contact-info {
+            color: white; /* Ensure text is white on the purple header */
+            margin: 0; /* Reset default margins */
+            font-size: 0.75rem; /* text-xs */
+            text-shadow: none; /* Remove text shadow as it's on a solid color now */
+        }
+
+        /* Content area padding */
+        .page-content {
+            padding: 0 30px 30px 30px; /* Apply padding to the content itself, below the header */
+            position: relative; /* Ensure content is above any potential background elements */
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+        }
+        .section-title span:first-child { order: 2; text-align: right; } /* Arabic */
+        .section-title span:last-child { order: 1; text-align: left; } /* English */
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #333;
+            font-size: 0.9em;
+        }
+        /* DaisyUI input styling adjustments for a more 'document' look */
+        .input, .textarea, .select {
+            width: 100%;
+            border: 1px solid #d1d5db; /* Default border */
+            padding: 8px 12px;
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 0.95em;
+            background-color: #f9fafb; /* Light background for input fields */
+        }
+        .input:focus, .textarea:focus, .select:focus {
+            outline: none;
+            border-color: var(--brand-primary-purple); /* Brand purple border on focus */
+            box-shadow: 0 0 0 2px rgba(108, 52, 232, 0.2); /* Use brand purple for focus ring */
+        }
+        .input-ghost-custom {
+            border: none;
+            border-bottom: 1px solid #000; /* mimic PDF underlines */
+            padding: 0 5px;
+            height: auto; /* Allow content to dictate height */
+            min-height: 0;
+            background-color: transparent;
+            border-radius: 0;
+            font-size: 0.9em;
+        }
+        .input-ghost-custom:focus {
+            box-shadow: none;
+            border-color: var(--brand-primary-purple);
+        }
+        .text-field-group {
+            margin-bottom: 15px;
+        }
+        .term-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #eee;
+        }
+        .term-item:last-of-type {
+            border-bottom: none;
+        }
+        .term-arabic {
+            direction: rtl;
+            text-align: right;
+            font-weight: normal; /* Override bold from list style */
+            margin-top: 5px; /* Space between English and Arabic */
+        }
+        .term-english {
+            direction: ltr;
+            text-align: left;
+            font-weight: normal; /* Override bold from list style */
+        }
+        /* Footer styling */
+        .document-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding: 10px 30px 10px 30px; /* Add padding to match page edges */
+            font-size: 0.75rem;
+            color: #555;
+        }
+        .document-footer .tolaab-brand {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--brand-primary-purple); /* Use brand purple for the Tolaab footer text */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .document-page {
+                padding: 0; /* Header and footer will handle their own padding */
+            }
+            .page-header-bar {
+                padding: 10px 15px; /* Adjust padding for smaller screens */
+                height: auto; /* Allow height to adjust */
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .page-header-bar .header-right {
+                align-items: flex-start;
+                margin-top: 5px; /* Space between logo and text stack */
+            }
+            .document-page::before {
+                background-size: 90%; /* Adjust watermark size for smaller screens */
+            }
+            .page-content {
+                padding: 0 15px 15px 15px; /* Adjust content padding for smaller screens */
+            }
+            .section-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .section-title span:first-child, .section-title span:last-child {
+                order: unset; /* Reset order for stacking */
+                text-align: left;
+            }
+            .grid-cols-2-md {
+                grid-template-columns: 1fr; /* Stack columns on small screens */
+            }
+            .document-footer {
+                padding: 10px 15px; /* Adjust padding for smaller screens */
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .document-footer .tolaab-brand {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form class="document-container" action="https://formspree.io/f/mdklpbdd" method="POST">
+        <!-- Page 1 -->
+        <div class="document-page">
+            <!-- Header Bar (Solid Brand Color with Logo) -->
+            <div class="page-header-bar">
+                <div class="header-left">
+                    <img src="https://tolaab.com/wp-content/uploads/2025/06/ic_launcher-150x150.png" alt="Tolaab Logo" class="tolaab-logo">
+                </div>
+                <div class="header-right">
+                    <div class="top-contact-info">
+                        business@tolaab.com <br>
+                        +971 50 169 1692 <br>
+                        www.tolaab.com
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <!-- Page 1 Specific: No. Date: and CORPORATE OFFER AGREEMENT -->
+                <div class="flex justify-end gap-x-8 text-sm text-gray-700 mb-8">
+                    <div class="flex items-center">
+                        <span class="mr-2 rtl:ml-2">No.:</span>
+                        <input type="text" class="input input-ghost-custom w-28" placeholder="C-XXXX" name="document_no">
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2 rtl:ml-2">Date:</span>
+                        <input type="date" class="input input-ghost-custom w-32" name="document_date">
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-center mb-6" style="color: var(--brand-primary-purple);">CORPORATE OFFER AGREEMENT</div>
+
+                <!-- Partner Details Section -->
+                <div class="mb-8">
+                    <div class="section-title">
+                        <span dir="rtl">تفاصيل الشريك</span>
+                        <span dir="ltr">Details Partner</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-4 grid-cols-2-md">
+                        <!-- Company Name -->
+                        <div class="text-field-group">
+                            <label for="company_name" class="form-label">اسم الشركة / Company Name:</label>
+                            <input type="text" id="company_name" name="company_name" class="input input-bordered" placeholder="Enter company name" required="">
+                        </div>
+                        <!-- Brand(s) -->
+                        <div class="text-field-group">
+                            <label for="brands" class="form-label">العلامة التجارية / Brand(s):</label>
+                            <input type="text" id="brands" name="brands" class="input input-bordered" placeholder="Enter brand names" required="">
+                        </div>
+                        <!-- License No. -->
+                        <div class="text-field-group">
+                            <label for="license_no" class="form-label">رقم الرخصة التجارية / License No.:</label>
+                            <input type="text" id="license_no" name="license_no" class="input input-bordered" placeholder="Enter license number" required="">
+                        </div>
+                        <!-- Category -->
+                        <div class="text-field-group">
+                            <label for="category" class="form-label">الفئة / Category:</label>
+                            <select id="category" name="category" class="select select-bordered" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <option value="Retail">Sports Club</option>
+                                <option value="Food & Beverage">Restaurants</option>
+                                <option value="Services">Clinic & Beauty</option>
+                                <option value="Health & Beauty">Cafes</option>
+                                <option value="Education">Auto Centers</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Hospitality">Salons & SPA</option>
+                                <option value="Automotive">Pharmacy</option>
+                                <option value="Real Estate">Retailers & Lifestyle</option>
+                                <option value="Technology">Perfume</option>
+                                <option value="Technology">Medical Centers</option>
+                                <option value="Technology">Fitness</option>
+                                <option value="Technology">Education</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <!-- Emirate -->
+                        <div class="text-field-group">
+                            <label for="emirate" class="form-label">الإمارة / Emirate:</label>
+                            <select id="emirate" name="emirate" class="select select-bordered" required="">
+                                <option value="" disabled="" selected="">Select an Emirate</option>
+                                <option value="Abu Dhabi">Abu Dhabi</option>
+                                <option value="Dubai">Dubai</option>
+                                <option value="Sharjah">Sharjah</option>
+                                <option value="Ajman">Ajman</option>
+                                <option value="Umm Al Quwain">Umm Al Quwain</option>
+                                <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                                <option value="Fujairah">Fujairah</option>
+                            </select>
+                        </div>
+                        <!-- P.O. Box No. -->
+                        <div class="text-field-group">
+                            <label for="po_box" class="form-label">رقم صندوق البريد / P.O. Box No.:</label>
+                            <input type="text" id="po_box" name="po_box" class="input input-bordered" placeholder="Enter P.O. Box number" required="">
+                        </div>
+                        <!-- Phone (Fixed Line) -->
+                        <div class="md:col-span-2 text-field-group">
+                            <label for="fixed_phone" class="form-label">رقم الهاتف الثابت / Phone:</label>
+                            <input type="tel" id="fixed_phone" name="fixed_phone" class="input input-bordered" placeholder="+971 XX XXX XXXX" required="">
+                        </div>
+                    </div>
+                    <!-- Number of Branches - new field -->
+                    <div class="text-field-group">
+                        <label for="num_branches" class="form-label">يرجى تحديد فئة نشاطكم التجاري وعدد الفروع المراد الترويج لها عبرنا / Number of Branches <span class="text-gray-500">(to be promoted with Tolaab)</span>:</label>
+                        <input type="number" id="num_branches" name="num_branches" class="input input-bordered" placeholder="e.g., 1, 2, 5" min="0" required="">
+                    </div>
+                </div>
+
+                <!-- Contact Details Section -->
+                <div class="mb-8">
+                    <div class="section-title">
+                        <span dir="rtl">بيانات الاتصال</span>
+                        <span dir="ltr">Details Contact</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 grid-cols-2-md">
+                        <!-- Contact Person -->
+                        <div class="text-field-group">
+                            <label for="contact_person" class="form-label">الشخص الذي يمكن الاتصال به / Contact Person:</label>
+                            <input type="text" id="contact_person" name="contact_person" class="input input-bordered" placeholder="Full Name" required="">
+                        </div>
+                        <!-- Mobile No. -->
+                        <div class="text-field-group">
+                            <label for="mobile_no" class="form-label">رقم الهاتف المتحرك / Mobile No.:</label>
+                            <input type="tel" id="mobile_no" name="mobile_no" class="input input-bordered" placeholder="+971 XX XXX XXXX" required="">
+                        </div>
+                        <!-- Designation -->
+                        <div class="text-field-group">
+                            <label for="designation" class="form-label">المسمى الوظيفي / Designation:</label>
+                            <input type="text" id="designation" name="designation" class="input input-bordered" placeholder="e.g., Manager, Owner" required="">
+                        </div>
+                        <!-- E-mail -->
+                        <div class="text-field-group">
+                            <label for="email" class="form-label">البريد الإلكتروني / E-mail:</label>
+                            <input type="email" id="email" name="email" class="input input-bordered" placeholder="name@company.com" required="">
+                            <!-- Added name="_replyto" for Formspree to set reply-to header -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Offer Details Section -->
+                <div class="mb-8">
+                    <div class="section-title">
+                        <span dir="rtl">تفاصيل العرض</span>
+                        <span dir="ltr">Details Offer</span>
+                    </div>
+                    <div class="text-field-group">
+                        <label for="offer_details" class="form-label">العرض / Offer:</label>
+                        <textarea id="offer_details" name="offer_details" rows="3" class="textarea textarea-bordered" placeholder="Describe the offer you are providing to Tolaab community members, e.g., '10% discount on all services for Tolaab users.'" required=""></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consistent Footer: Logo/Brand & Contact Info -->
+            <div class="document-footer">
+                <div class="tolaab-brand">TOLAAB</div>
+                <div class="contact-info">
+                    business@tolaab.com | +971 50 169 1692 | www.tolaab.com
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div class="document-page">
+            <!-- Header Bar (Solid Brand Color with Logo) -->
+            <div class="page-header-bar">
+                <div class="header-left">
+                    <img src="https://tolaab.com/wp-content/uploads/2025/06/ic_launcher-150x150.png" alt="Tolaab Logo" class="tolaab-logo">
+                </div>
+                <div class="header-right">
+                    <div class="top-contact-info">
+                        business@tolaab.com <br>
+                        +971 50 169 1692 <br>
+                        www.tolaab.com
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <!-- Payment Instructions Section -->
+                <div class="mb-8">
+                    <div class="section-title">
+                        <span dir="rtl">تعليمات الدفع</span>
+                        <span dir="ltr">Instructions Payment</span>
+                    </div>
+                    <div class="text-sm text-gray-700 mb-4">
+                        <p dir="ltr" class="mb-2">Payments should be made to the following account:</p>
+                        <p dir="rtl" class="mb-2">يجب أن تتم الدفعات إلى الحساب التالي:</p>
+                        <ul class="list-none p-0 ml-4 mb-4">
+                            <li><strong>Account Name:</strong> TOLAAB ELECTRONIC SERVICES <span dir="rtl">(اسم الحساب)</span></li>
+                            <li><strong>Bank Name:</strong> ABU DHABI COMMERCIAL BANK <span dir="rtl">(اسم البنك)</span></li>
+                            <li><strong>IBAN:</strong> AE510030014250894820001 <span dir="rtl">(رقم الآيبان)</span></li>
+                            <li><strong>Account Number:</strong> 14250894820001 <span dir="rtl">(رقم الحساب)</span></li>
+                        </ul>
+                        <p dir="ltr" class="mb-2">Please include your company name in the payment reference. Card payments are also available upon request.</p>
+                        <p dir="rtl">ملاحظة: يرجى ذكر اسم شركتك في خانة مرجع الدفع. الدفع عبر البطاقة متاح عند الطلب.</p>
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions Section -->
+                <div class="mb-8">
+                    <div class="section-title">
+                        <span dir="rtl">الشروط والأحكام</span>
+                        <span dir="ltr">Terms and conditions</span>
+                    </div>
+                    <p dir="ltr" class="mb-4">We, "<input type="text" class="input input-ghost-custom w-48" placeholder="Your Company Name" name="second_party_name_in_terms">" (hereinafter referred to as "the Second Party"), agree to our participation in supporting Tolaab program (hereinafter referred to as "the First Party"), with our commitment to abide by the terms and conditions below:</p>
+                    <p dir="rtl" class="mb-4">نحنــــ "<input type="text" class="input input-ghost-custom w-48" placeholder="اسم شركتك" name="second_party_name_in_terms_ar">" (ويشار إليه/إليها فيما بعد بــــــ "الطرف الثاني") نوافق على مشاركتنا في دعم برنامج طلاب من خلال التوقيع على هذه الاتفاقية مع طلاب لخدمات إلكترونية (ويشار إليها فيما بعد بـ "الطرف الأول")، مع تعهدنا بالالتزام بكافة الشروط والأحكام أدناه:</p>
+
+                    <ol class="list-decimal pl-5 text-sm">
+                        <li class="term-item">
+                            <p class="term-english">This agreement is valid for a period of one (1) year from 15th of September 2025, unless one of the parties notifies the other of their unwillingness to renew, by sending a written notice to the other party, thirty days prior to the date specified for the expiry of this agreement. (30) days.</p>
+                            <p class="term-english">Tolaab reserves the right to suspend services for non-payment (5 days from the due date), or breach of terms after.</p>
+                            <p class="term-arabic">تسري هذه الاتفاقية لمدة سنة واحدة من تاريخ 15 سبتمبر 2025 ، ما لم يتم إخطار أحد الطرفين للآخر بعدم الرغبة في التجديد، وذلك بإرسال إشعار خطي للطرف الآخر وذلك قبل التاريخ المحدد لانتهاء هذه الاتفاقية بثلاثين (30) يوماً.</p>
+                            <p class="term-arabic">تحتفظ طلاب بحق إيقاف الخدمات في حال:</p>
+                            <ul dir="rtl" class="list-disc pr-5">
+                                <li>عدم السداد بعد مرور 5 أيام من تاريخ الاستحقاق</li>
+                                <li>الإخلال بأي من شروط الاتفاقية</li>
+                            </ul>
+                        </li>
+                        <li class="term-item">
+                            <p class="term-english">Either party has the right to terminate this agreement at any time, by sending a written notice to the other party thirty (30) days before the date set for termination, with the Second Party committing to provide all the discounts offered under this agreement for a period of 30 days starting from the date of termination request. For written notification of Second Party’s desire to terminate this agreement, provided that this period does not exceed the date of termination of this agreement.</p>
+                            <p class="term-arabic">يحق لأي من الطرفين إنهاء هذه الاتفاقية في أي وقت، وذلك بإرسال إشعار خطي للطرف الآخر وذلك قبل التاريخ المحدد للإنهاء بثلاثين (30) يوماً، مع التزام الطرف الثاني بتقديم كافة الخصومات المقدمة من طرفه بموجب هذه الاتفاقية لمدة 30 يوم تبدأ من تاريخ إرساله للإشعار الخطي الخاص برغبته بإنهاء هذه الاتفاقية، شرط ألا تتجاوز تلك المدة تاريخ إنهاء هذه الاتفاقية.</p>
+                        </li>
+                        <li class="term-item">
+                            <p class="term-english">The Second Party undertakes that all marketing files are editable, so that the First Party can take copies of them or the attached image files for the purpose of using them for marketing purposes.</p>
+                            <p class="term-arabic">يتعهد الطرف الثاني بأن تكون كافة ملفات التسويق قابلة للتحرير، بحيث يمكن للطرف الأول أخذ نسخ منها أو من ملفات الصور المرفقة بغرض استخدامها في الإعلان.</p>
+                        </li>
+                        <li class="term-item">
+                            <p class="term-english">The Second Party undertakes to grant Tolaab community members the discount mentioned above through all branches owned by the Second Party inside the United Arab Emirates upon the availability.</p>
+                            <p class="term-arabic">يتعهد الطرف الثاني بمنح مستخدمي طلاب الخصم الوارد أعلاه من خلال جميع الفروع المملوكة للطرف الثاني داخل دولة الإمارات العربية المتحدة في حال وجد.</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Consistent Footer: Logo/Brand & Contact Info -->
+            <div class="document-footer">
+                <div class="tolaab-brand">TOLAAB</div>
+                <div class="contact-info">
+                    business@tolaab.com | +971 50 169 1692 | www.tolaab.com
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3 -->
+        <div class="document-page">
+            <!-- Header Bar (Solid Brand Color with Logo) -->
+            <div class="page-header-bar">
+                <div class="header-left">
+                    <img src="https://tolaab.com/wp-content/uploads/2025/06/ic_launcher-150x150.png" alt="Tolaab Logo" class="tolaab-logo">
+                </div>
+                <div class="header-right">
+                    <div class="top-contact-info">
+                        business@tolaab.com <br>
+                        +971 50 169 1692 <br>
+                        www.tolaab.com
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <!-- Transaction Commission Section -->
+                <div class="mb-8">
+                    <div class="section-title">
+                        <span dir="rtl">عمولة المعاملات</span>
+                        <span dir="ltr">Transaction Commission</span>
+                    </div>
+                    <p class="text-sm mb-4">
+                        <span dir="ltr" class="block">The Partner agrees to pay Tolaab a commission on all platform-based transactions, in accordance with the selected plan:</span>
+                        <span dir="rtl" class="block">يوافق الشريك على دفع عمولة إلى على جميع المعاملات التي تتم عبر المنصة، وذلك وفقاً للخطة المختارة</span>
+                    </p>
+                    <ul class="list-disc pl-5 text-sm mb-4">
+                        <li class="term-english">Automatically tracked and invoiced with the monthly subscription</li>
+                        <li class="term-english">Full details available in the vendor dashboard</li>
+                    </ul>
+                    <ul class="list-disc pr-5 text-sm mb-6" dir="rtl">
+                        <li class="term-arabic">يتم تتبعها وإصدار فواتير بها تلقائياً مع الاشتراك الشهري</li>
+                        <li class="term-arabic">تكون التفاصيل متاحة بالكامل في لوحة تحكم التاجر</li>
+                    </ul>
+
+                    <p class="text-sm mb-4">
+                        <span dir="ltr" class="block">Kindly choose the option that best suits your esteemed business:</span>
+                        <span dir="rtl" class="block">نرجو منكم التفضل باختيار الخيار الذي يتناسب مع طبيعة وأهداف عملكم الموقر.</span>
+                    </p>
+
+                    <div class="space-y-4">
+                        <!-- First Option -->
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="commission_option" value="option1_1499_3pc" class="radio radio-primary">
+                            <span class="label-text">
+                                <strong class="block text-base" dir="ltr">First Option:</strong>
+                                <strong class="block text-base" dir="rtl">الخيار الأول:</strong>
+                                <span class="block" dir="ltr">- One time registration fee: 1499 AED</span>
+                                <span class="block" dir="rtl">- رسوم تسجيل لمرة واحدة: 1499 درهم</span>
+                                <span class="block" dir="ltr">- (3%) on total transactions happen by Tolaab users.</span>
+                                <span class="block" dir="rtl">- (3%) على إجمالي المعاملات التي تتم عبر مستخدمي Tolaab</span>
+                            </span>
+                        </label>
+                        <!-- Second Option -->
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="commission_option" value="option2_zero_5pc" class="radio radio-primary">
+                            <span class="label-text">
+                                <strong class="block text-base" dir="ltr">Second Option: Zero Risk Offer:</strong>
+                                <strong class="block text-base" dir="rtl">الخيار الثاني: عرض بدون مخاطر:</strong>
+                                <span class="block" dir="ltr">- No upfront payment “Trial Period: Six (6) months”</span>
+                                <span class="block" dir="rtl">- بدون أي دفعة مقدمة "فترة التجربة: ستة (6) أشهر"</span>
+                                <span class="block" dir="ltr">- (5%) commission on every transaction made by our students users</span>
+                                <span class="block" dir="rtl">- عمولة (5%) على كل معاملة يقوم بها مستخدمو طلاب</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Confidentiality Section (Term 6) -->
+                <div class="mb-8">
+                    <ol class="list-decimal pl-5 text-sm" start="6">
+                        <li class="term-item">
+                            <p class="term-english">The two parties are obligated to maintain the confidentiality of the information, data and / or documents exchanged that each party deems necessary to implement this agreement, and no party may use such information, data and / or documents for a third party outside the scope of this agreement, nor it may be disclosed to others other than those authorized by law, provided that the prior written consent of the other party is obtained.</p>
+                            <p class="term-english">The Partner agrees not to use the Tolaab platform for illegal activities. All information shared between parties remain confidential.</p>
+                            <p class="term-arabic">يلتزم الطرفان بالحفاظ على المعلومات والبيانات و/أو المستندات المتبادلة التي يراها كل طرف ضرورية لتنفيذ هذه الاتفاقية، ولا يجوز لأي طرف استخدام تلك المعلومات والبيانات و/أو المستندات لطرف ثالث خارج نطاق تطبيق هذه الاتفاقية، ولا يجوز الإفصاح عنها للغير، باستثناء الحالات المصرح بها بموجب القانون، شريطة الحصول على موافقة خطية مسبقة من الطرف الآخر.</p>
+                            <p class="term-arabic">يلتزم الشريك بعدم استخدام منصة طلاب لأي أغراض غير قانونية. جميع المعلومات المتبادلة بين الطرفين تعتبر سرية.</p>
+                        </li>
+                        <li class="term-item">
+                            <p class="term-english">This agreement shall be governed and construed in accordance with the laws in the Emirate of Abu Dhabi and the federal laws of the United Arab Emirates.</p>
+                            <p class="term-arabic">تخضع هذه الاتفاقية وتفسر وفقاً للقوانين المعمول بها في إمارة أبوظبي والقوانين الاتحادية لدولة الإمارات العربية المتحدة.</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Consistent Footer: Logo/Brand & Contact Info -->
+            <div class="document-footer">
+                <div class="tolaab-brand">TOLAAB</div>
+                <div class="contact-info">
+                    business@tolaab.com | +971 50 169 1692 | www.tolaab.com
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4 -->
+        <div class="document-page">
+            <!-- Header Bar (Solid Brand Color with Logo) -->
+            <div class="page-header-bar">
+                <div class="header-left">
+                    <img src="https://tolaab.com/wp-content/uploads/2025/06/ic_launcher-150x150.png" alt="Tolaab Logo" class="tolaab-logo">
+                </div>
+                <div class="header-right">
+                    <div class="top-contact-info">
+                        business@tolaab.com <br>
+                        +971 50 169 1692 <br>
+                        www.tolaab.com
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <!-- Approval Section -->
+                <div class="mb-8">
+                    <p dir="ltr" class="mb-4">In recognition of the above, the two parties authorized to sign this agreement on:</p>
+                    <p dir="rtl" class="mb-4">وإقراراً لما ورد أعلاه، قام الطرفان المفوضان بالتوقيع على هذه الاتفاقية بتاريخ:</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 mt-8 grid-cols-2-md">
+                        <!-- Approved on behalf of the Second Party (Fillable) -->
+                        <div>
+                            <h3 class="font-bold text-lg mb-4 text-gray-800">Approved on behalf of the Second Party</h3>
+                            <div class="space-y-4">
+                                <div class="text-field-group">
+                                    <label for="second_party_name_approval" class="form-label">Name:</label>
+                                    <input type="text" id="second_party_name_approval" name="second_party_name_approval" class="input input-bordered" placeholder="Your Name" required="">
+                                </div>
+                                <div class="text-field-group">
+                                    <label for="second_party_position" class="form-label">Position:</label>
+                                    <input type="text" id="second_party_position" name="second_party_position" class="input input-bordered" placeholder="Your Position" required="">
+                                </div>
+                                <div class="text-field-group">
+                                    <label for="second_party_date_approval" class="form-label">Date:</label>
+                                    <input type="date" class="input input-bordered" name="second_party_date_approval" required="">
+                                </div>
+                                <div class="text-field-group">
+                                    <label for="second_party_signature" class="form-label">Signature:</label>
+                                    <input type="text" id="second_party_signature" name="second_party_signature" class="input input-bordered" placeholder="Type your full name as signature" required="">
+                                    <p class="text-xs text-gray-500 mt-1"><em>(Type full name to indicate signature for digital copy)</em></p>
+                                </div>
+                                <div class="text-field-group">
+                                    <label for="second_party_stamp" class="form-label">Stamp:</label>
+                                    <input type="text" id="second_party_stamp" name="second_party_stamp" class="input input-bordered" placeholder="Indicate company stamp (if applicable)">
+                                    <p class="text-xs text-gray-500 mt-1"><em>(Type "Company Stamp" or leave blank)</em></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Approved on behalf of TOLAAB ELECTRONIC SERVICES (Read-only) -->
+                        <div>
+                            <h3 class="font-bold text-lg mb-4 text-gray-800">Approved on behalf of TOLAAB ELECTRONIC SERVICES</h3>
+                            <div class="space-y-4">
+                                <div class="text-field-group">
+                                    <label for="tolaab_name" class="form-label">Name:</label>
+                                    <input type="text" id="tolaab_name" value="Sayed Mahdi Moosavi" class="input input-bordered bg-gray-100 cursor-not-allowed" readonly="">
+                                </div>
+                                <div class="text-field-group">
+                                    <label for="tolaab_position" class="form-label">Position:</label>
+                                    <input type="text" id="tolaab_position" value="CEO" class="input input-bordered bg-gray-100 cursor-not-allowed" readonly="">
+                                </div>
+                                <div class="text-field-group">
+                                    <label for="tolaab_date" class="form-label">Date:</label>
+                                    <input type="date" id="tolaab_date" class="input input-bordered bg-gray-100 cursor-not-allowed" readonly="">
+                                </div>
+                                <div class="text-field-group">
+                                    <label for="tolaab_signature" class="form-label">Signature:</label>
+                                    <input type="text" id="tolaab_signature" value="[Digitally Signed]" class="input input-bordered bg-gray-100 cursor-not-allowed" readonly="">
+                                </div>
+                                <div class="text-field-group">
+                                    <label for="tolaab_stamp" class="form-label">Stamp:</label>
+                                    <input type="text" id="tolaab_stamp" value="[Company Stamp]" class="input input-bordered bg-gray-100 cursor-not-allowed" readonly="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button (Added for functionality) -->
+                <div class="text-center mt-10">
+                    <button type="submit" class="btn btn-primary px-8 py-3 text-lg" style="background-color: var(--brand-primary-purple);">Submit Agreement</button>
+                </div>
+            </div>
+
+            <!-- Consistent Footer: Logo/Brand & Contact Info -->
+            <div class="document-footer">
+                <div class="tolaab-brand">TOLAAB</div>
+                <div class="contact-info">
+                    business@tolaab.com | +971 50 169 1692 | www.tolaab.com
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- JavaScript to set current date on date input fields -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const day = String(today.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+
+            // Update the 'Date' field at the top of Page 1
+            const documentDateInput = document.querySelector('input[name="document_date"]');
+            if (documentDateInput) {
+                documentDateInput.value = formattedDate;
+            }
+
+            // Update the 'Date' field for the Second Party Approval
+            const secondPartyDateApprovalInput = document.querySelector('input[name="second_party_date_approval"]');
+            if (secondPartyDateApprovalInput) {
+                secondPartyDateApprovalInput.value = formattedDate;
+            }
+
+            // Update the 'Date' field for TOLAAB ELECTRONIC SERVICES (read-only)
+            const tolaabDateInput = document.getElementById('tolaab_date');
+            if (tolaabDateInput) {
+                tolaabDateInput.value = formattedDate;
+            }
+        });
+    </script>
+
+
+
+<script id="inject-code-script">
+  const handleMessage = (e) => {
+    const { type, code } = e.data
+    const thisScript = document.getElementById('inject-code-script')
+
+    if (type === 'injectCode') {
+      // Parse the code using DOMParser
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(code, 'text/html')
+      // Get head and body content from parsed doc
+      const headContent = doc.head.innerHTML
+      const bodyContent = doc.body
+      // Replace current document head/body if content exists
+      if (headContent) {
+        document.head.innerHTML = headContent
+      }
+      if (bodyContent) {
+        document.body = bodyContent
+      }
+
+
+      // If no head/body tags, treat as body content
+      if (!headContent && !bodyContent) {
+        document.body.innerHTML = code + "\n" + document.body.innerHTML
+      }
+    }
+  }
+  window.addEventListener('message', handleMessage)
+</script>
+</body></html>
