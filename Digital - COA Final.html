@@ -234,7 +234,7 @@
     </style>
 </head>
 <body>
-    <form class="document-container" action="https://formspree.io/f/mdklpbdd" method="POST">
+    <form class="document-container" action="https://formspree.io/f/mdklpbdd" method="POST" enctype="multipart/form-data">
         <!-- Page 1 -->
         <div class="document-page">
             <!-- Header Bar (Solid Brand Color with Logo) -->
@@ -379,7 +379,7 @@
                     </div>
                     <div class="text-field-group">
                         <label for="offer_details" class="form-label">العرض / Offer:</label>
-                        <textarea id="offer_details" name="offer_details" rows="3" class="textarea textarea-bordered" placeholder="Describe the offer you are providing to Tolaab community members, e.g., '10% discount on all services for Tolaab users.'" required=""></textarea>
+                        <textarea id="offer_details" name="offer_details" rows="3" class="textarea textarea-bordered" placeholder="Describe the offer you are providing to Tolaab community members, e.g., '20% discount on all services for Tolaab users.'" required=""></textarea>
                     </div>
                 </div>
             </div>
@@ -441,9 +441,9 @@
 
                     <ol class="list-decimal pl-5 text-sm">
                         <li class="term-item">
-                            <p class="term-english">This agreement is valid for a period of one (1) year from 15th of September 2025, unless one of the parties notifies the other of their unwillingness to renew, by sending a written notice to the other party, thirty days prior to the date specified for the expiry of this agreement. (30) days.</p>
+                            <p class="term-english">This agreement is valid for a period of one (1) year from 1st of November 2025, unless one of the parties notifies the other of their unwillingness to renew, by sending a written notice to the other party, thirty days prior to the date specified for the expiry of this agreement. (30) days.</p>
                             <p class="term-english">Tolaab reserves the right to suspend services for non-payment (5 days from the due date), or breach of terms after.</p>
-                            <p class="term-arabic">تسري هذه الاتفاقية لمدة سنة واحدة من تاريخ 15 سبتمبر 2025 ، ما لم يتم إخطار أحد الطرفين للآخر بعدم الرغبة في التجديد، وذلك بإرسال إشعار خطي للطرف الآخر وذلك قبل التاريخ المحدد لانتهاء هذه الاتفاقية بثلاثين (30) يوماً.</p>
+                            <p class="term-arabic">تسري هذه الاتفاقية لمدة سنة واحدة من تاريخ 1 نوفمبر 2025 ، ما لم يتم إخطار أحد الطرفين للآخر بعدم الرغبة في التجديد، وذلك بإرسال إشعار خطي للطرف الآخر وذلك قبل التاريخ المحدد لانتهاء هذه الاتفاقية بثلاثين (30) يوماً.</p>
                             <p class="term-arabic">تحتفظ طلاب بحق إيقاف الخدمات في حال:</p>
                             <ul dir="rtl" class="list-disc pr-5">
                                 <li>عدم السداد بعد مرور 5 أيام من تاريخ الاستحقاق</li>
@@ -611,13 +611,17 @@
                                 </div>
                                 <div class="text-field-group">
                                     <label for="second_party_signature" class="form-label">Signature:</label>
-                                    <input type="text" id="second_party_signature" name="second_party_signature" class="input input-bordered" placeholder="Type your full name as signature" required="">
-                                    <p class="text-xs text-gray-500 mt-1"><em>(Type full name to indicate signature for digital copy)</em></p>
+                                    <input type="file" id="Signature_Upload" name="Signature_Upload" class="file-input file-input-bordered" accept="image/*,application/pdf">
+                                    <p class="text-xs text-gray-500 mt-1"><em>(Upload your signature as an image or PDF — or leave blank if not applicable)</em></p>
                                 </div>
                                 <div class="text-field-group">
                                     <label for="second_party_stamp" class="form-label">Stamp:</label>
-                                    <input type="text" id="second_party_stamp" name="second_party_stamp" class="input input-bordered" placeholder="Indicate company stamp (if applicable)">
-                                    <p class="text-xs text-gray-500 mt-1"><em>(Type "Company Stamp" or leave blank)</em></p>
+                                    <input type="file" id="second_party_stamp" name="second_party_stamp" class="file-input file-input-bordered" accept="image/*,application/pdf">
+
+                                <p class="text-xs text-gray-500 mt-1">
+                                <em>(Upload company stamp as Image or PDF)</em>
+                                </p>
+
                                 </div>
                             </div>
                         </div>
@@ -694,7 +698,7 @@
                 tolaabDateInput.value = formattedDate;
             }
         });
-    </script>
+    </script></form>
 
 
 
