@@ -6,12 +6,12 @@
 <title>Corporate Offer Agreement - Tolaab</title>
 
 <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.min.css" rel="stylesheet" type="text/css">
+
 <style>
 :root {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --background-color-main: #eceef5;
   --background-color-primary: #5f2eed;
   --background-color-primary-dark: #310d9b;
+  --background-color-main: #eceef5;
   --text-color-main: #292d32;
   --text-color-paragraph: #757575;
   --radius-xl: 1rem;
@@ -19,7 +19,7 @@
 
 body {
   background-color: var(--background-color-main);
-  font-family: var(--font-sans);
+  font-family: ui-sans-serif, system-ui, sans-serif;
   color: var(--text-color-main);
   overflow-x: hidden;
   position: relative;
@@ -27,41 +27,28 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 50px 16px;
+  padding: 60px 16px;
 }
 
-/* Floating Circles */
-.circle {
-  position: absolute;
-  border-radius: 50%;
-  background: var(--background-color-primary);
-  animation: float 16s ease-in-out infinite;
-}
-@keyframes float {
-  0%,100% { transform: translateY(0px) translateX(0px) scale(1); }
-  50% { transform: translateY(-40px) translateX(30px) scale(1.06); }
+/* 🔹 Background Video */
+.bg-video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.35;
+  filter: blur(2px);
 }
 
-/* 12 Elegant Circles */
-.circle1 { width: 420px; height: 420px; top: -180px; left: -180px; opacity: 0.3; animation-delay: 0s; }
-.circle2 { width: 320px; height: 320px; bottom: -150px; right: -120px; opacity: 0.35; animation-delay: 1s; }
-.circle3 { width: 240px; height: 240px; top: 60%; left: -100px; opacity: 0.25; animation-delay: 2s; }
-.circle4 { width: 180px; height: 180px; top: 25%; right: 12%; opacity: 0.4; animation-delay: 3s; }
-.circle5 { width: 260px; height: 260px; bottom: 15%; left: 15%; opacity: 0.28; animation-delay: 4s; }
-.circle6 { width: 140px; height: 140px; bottom: 10%; right: 30%; opacity: 0.45; animation-delay: 5s; }
-.circle7 { width: 100px; height: 100px; top: 12%; left: 40%; opacity: 0.22; animation-delay: 6s; }
-.circle8 { width: 200px; height: 200px; bottom: 35%; right: 45%; opacity: 0.3; animation-delay: 7s; }
-.circle9 { width: 240px; height: 240px; top: 70%; left: 55%; opacity: 0.4; animation-delay: 8s; }
-.circle10 { width: 120px; height: 120px; top: 8%; right: 35%; opacity: 0.25; animation-delay: 9s; }
-.circle11 { width: 300px; height: 300px; top: 80%; right: 10%; opacity: 0.28; animation-delay: 10s; }
-.circle12 { width: 160px; height: 160px; bottom: 60%; left: 50%; opacity: 0.35; animation-delay: 11s; }
-
+/* Form Card */
 .form-card {
   width: 100%;
   max-width: 950px;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: var(--radius-xl);
-  padding: 36px 28px 46px;
+  padding: 40px 36px 50px 36px;
   box-shadow: 0 10px 50px rgba(95, 46, 237, 0.25);
   position: relative;
   z-index: 10;
@@ -70,9 +57,9 @@ body {
 
 /* Logo */
 .logo {
-  width: 85px;
-  height: 85px;
-  margin: 0 auto 18px;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 20px;
 }
 .logo img {
   width: 100%;
@@ -80,29 +67,25 @@ body {
   object-fit: contain;
 }
 
-/* Title */
+/* Titles */
 h1 {
   text-align: center;
-  font-size: clamp(28px, 5vw, 46px);
+  font-size: 52px;
   font-weight: 800;
-  color: var(--background-color-primary);
+  color: #4011e8;
   margin-bottom: 20px;
 }
-
-/* Description */
 p {
   text-align: center;
   font-size: 15px;
   color: var(--text-color-paragraph);
-  margin-bottom: 36px;
+  margin-bottom: 40px;
 }
-
-/* Section Titles */
 .section-title {
   font-weight: 700;
-  font-size: 20px;
-  color: var(--background-color-primary-dark);
-  margin-top: 18px;
+  font-size: 22px;
+  color: #4011e8;
+  margin-top: 20px;
   margin-bottom: 12px;
   border-left: 5px solid var(--background-color-primary);
   padding-left: 10px;
@@ -124,13 +107,13 @@ input:focus, select:focus {
   box-shadow: 0 0 0 3px rgba(95, 46, 237, 0.2);
 }
 
-/* Button */
+/* Buttons */
 .btn {
   background: linear-gradient(90deg, var(--background-color-primary), var(--background-color-primary-dark));
   color: white;
   font-size: 16px;
   font-weight: 600;
-  padding: 14px;
+  padding: 10px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -143,7 +126,7 @@ input:focus, select:focus {
   box-shadow: 0 14px 30px rgba(95, 46, 237, 0.4);
 }
 
-/* Terms Toggle */
+/* Terms Section */
 .toggle-section {
   display: none;
   background: #f7f7fb;
@@ -154,133 +137,92 @@ input:focus, select:focus {
   color: #555;
   margin-top: 10px;
 }
-
-/* Mobile Adjustments */
-@media (max-width: 640px) {
-  .form-card { padding: 28px 20px 40px; }
-  .section-title { font-size: 18px; }
-  input, select, .file-input { font-size: 14px; }
-  p { font-size: 14px; }
-  .btn { font-size: 15px; padding: 12px; }
-}
 </style>
 </head>
 
 <body>
-  <!-- 12 Floating Circles -->
-  <div class="circle circle1"></div>
-  <div class="circle circle2"></div>
-  <div class="circle circle3"></div>
-  <div class="circle circle4"></div>
-  <div class="circle circle5"></div>
-  <div class="circle circle6"></div>
-  <div class="circle circle7"></div>
-  <div class="circle circle8"></div>
-  <div class="circle circle9"></div>
-  <div class="circle circle10"></div>
-  <div class="circle circle11"></div>
-  <div class="circle circle12"></div>
+  <!-- 🌌 Background Video -->
+  <video autoplay muted loop playsinline class="bg-video">
+    <source src="https://www.dropbox.com/scl/fi/4onunbre7r0fi44ex8mbc/Introduction.mp4?rlkey=1v56pxpvw8nadepu415jyni0d&dl=1" type="video/mp4">
+  </video>
 
   <div class="form-card">
+    <!-- 🎥 Intro Video -->
+    <div style="margin-bottom: 30px; text-align: center;">
+      <video width="100%" controls poster="https://tolaab.com/wp-content/uploads/2025/06/ic_launcher.png"
+        style="border-radius: 16px; box-shadow: 0 10px 40px rgba(95, 46, 237, 0.25); max-height: 480px;">
+        <source src="https://www.dropbox.com/scl/fi/4onunbre7r0fi44ex8mbc/Introduction.mp4?rlkey=1v56pxpvw8nadepu415jyni0d&dl=1" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <p style="font-size: 14px; color: #555; margin-top: 8px;">
+        🎬 Watch this short introduction before filling your agreement.
+      </p>
+    </div>
+
+    <!-- Logo -->
     <div class="logo">
       <img src="https://tolaab.com/wp-content/uploads/2025/06/ic_launcher.png" alt="Tolaab Logo">
     </div>
+
+    <!-- Main Title -->
     <h1>Corporate Offer Agreement - Tolaab</h1>
     <p>This form will be <b>Digitally Signed</b> after submission and <b>Stamped & Shared</b> back with you.</p>
 
+    <!-- Form -->
     <form id="coaForm" action="https://formspree.io/f/mdklpbdd" method="POST" enctype="multipart/form-data">
-      <!-- Partner Details -->
       <div class="section-title">تفاصيل الشريك / Partner Details</div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label>اسم الشركة / Company Name:</label>
-          <input type="text" id="company_name" name="company_name" placeholder="Enter company name" required>
-        </div>
-        <div>
-          <label>العلامة التجارية / Brand(s):</label>
-          <input type="text" name="brands" placeholder="Enter brand names" required>
-        </div>
-        <div>
-          <label>رقم الرخصة التجارية / License No.:</label>
-          <input type="text" name="license_no" placeholder="Enter license number" required>
-        </div>
+        <div><label>اسم الشركة / Company Name:</label><input type="text" name="company_name" required></div>
+        <div><label>العلامة التجارية / Brand(s):</label><input type="text" name="brands" required></div>
+        <div><label>رقم الرخصة التجارية / License No.:</label><input type="text" name="license_no" required></div>
         <div>
           <label>الفئة / Category:</label>
           <select name="category" required>
-            <option value="" disabled selected>Select a category</option>
-            <option value="Retailers & Lifestyle">Retailers & Lifestyle</option>
-            <option value="Restaurants">Restaurants</option>
-            <option value="Cafes">Cafes</option>
-            <option value="Clinic & Beauty">Clinic & Beauty</option>
-            <option value="Auto Centers">Auto Centers</option>
-            <option value="Salons & SPA">Salons & SPA</option>
-            <option value="Pharmacy">Pharmacy</option>
-            <option value="Fitness">Fitness</option>
-            <option value="Education">Education</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Perfume">Perfume</option>
-            <option value="Medical Centers">Medical Centers</option>
-            <option value="Other">Other</option>
+            <option disabled selected>Select a category</option>
+            <option>Retailers & Lifestyle</option><option>Restaurants</option><option>Cafes</option>
+            <option>Clinic & Beauty</option><option>Auto Centers</option><option>Salons & SPA</option>
+            <option>Pharmacy</option><option>Fitness</option><option>Education</option>
+            <option>Entertainment</option><option>Perfume</option><option>Medical Centers</option><option>Other</option>
           </select>
         </div>
         <div>
           <label>الإمارة المقر الرئيسي / Headquarter Emirate:</label>
           <select name="headquarter_emirate" required>
-            <option value="" disabled selected>Select Emirate</option>
-            <option value="Abu Dhabi">Abu Dhabi</option>
-            <option value="Dubai">Dubai</option>
-            <option value="Sharjah">Sharjah</option>
-            <option value="Ajman">Ajman</option>
-            <option value="Umm Al Quwain">Umm Al Quwain</option>
-            <option value="Ras Al Khaimah">Ras Al Khaimah</option>
-            <option value="Fujairah">Fujairah</option>
+            <option disabled selected>Select Emirate</option>
+            <option>Abu Dhabi</option><option>Dubai</option><option>Sharjah</option>
+            <option>Ajman</option><option>Umm Al Quwain</option><option>Ras Al Khaimah</option><option>Fujairah</option>
           </select>
         </div>
       </div>
 
-      <!-- Contact Details -->
       <div class="section-title">بيانات الاتصال / Contact Details</div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label>الشخص الذي يمكن الاتصال به / Contact Person:</label>
-          <input type="text" name="contact_person" placeholder="Full Name" required>
-        </div>
-        <div>
-          <label>رقم الهاتف المتحرك / Mobile No.:</label>
-          <input type="tel" name="mobile_no" placeholder="+971 XX XXX XXXX" required>
-        </div>
+        <div><label>الشخص الذي يمكن الاتصال به / Contact Person:</label><input type="text" name="contact_person" required></div>
+        <div><label>رقم الهاتف المتحرك / Mobile No.:</label><input type="tel" name="mobile_no" required></div>
       </div>
 
-      <!-- Upload Documents -->
       <div class="section-title">Upload Documents</div>
-      <div class="mb-4">
-        <label>Trade License:</label>
-        <input type="file" name="trade_license" class="file-input" accept="image/*,application/pdf" required>
-      </div>
-      <div class="mb-4">
-        <label>Tax Registration:</label>
-        <input type="file" name="tax_registration" class="file-input" accept="image/*,application/pdf">
-      </div>
+      <div class="mb-4"><label>Trade License:</label><input type="file" name="trade_license" class="file-input" required></div>
+      <div class="mb-4"><label>Tax Registration:</label><input type="file" name="tax_registration" class="file-input"></div>
 
-      <!-- Transaction Commission -->
       <div class="section-title">Transaction Commission / عمولة المعاملات</div>
-      <div class="flex flex-col gap-4 mb-4">
-        <label class="flex items-start gap-3 p-4 bg-white rounded-lg cursor-pointer border hover:shadow-md transition">
-          <input type="radio" name="commission_option" value="option1" class="radio radio-primary mt-1" required>
+      <div class="flex flex-col gap-2 mb-4">
+        <label class="flex items-center gap-3 bg-white p-3 rounded-lg border cursor-pointer hover:shadow">
+          <input type="radio" name="commission_option" value="option1" class="radio radio-primary" required>
           <span>First Option: 1499 AED registration + 3% transaction</span>
         </label>
-        <label class="flex items-start gap-3 p-4 bg-white rounded-lg cursor-pointer border hover:shadow-md transition">
-          <input type="radio" name="commission_option" value="option2" class="radio radio-primary mt-1">
+        <label class="flex items-center gap-3 bg-white p-3 rounded-lg border cursor-pointer hover:shadow">
+          <input type="radio" name="commission_option" value="option2" class="radio radio-primary">
           <span>Second Option: Zero upfront, 5% on transactions</span>
         </label>
       </div>
 
-      <!-- Terms & Conditions -->
       <div class="section-title">Terms & Conditions</div>
-      <label class="flex items-center gap-3 p-4 bg-white rounded-lg cursor-pointer border hover:shadow-md transition">
-        <input type="checkbox" name="accept_terms" class="checkbox checkbox-primary mt-1" required>
+      <label class="flex items-center gap-3 bg-white p-3 rounded-lg border cursor-pointer hover:shadow">
+        <input type="checkbox" name="accept_terms" class="checkbox checkbox-primary" required>
         <span>I accept the Terms & Conditions (<span class="text-primary cursor-pointer" onclick="toggleTerms()">Read</span>)</span>
       </label>
+
       <div id="termsContent" class="toggle-section grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
         <div>
           نحن "<span id='companyNamePlaceholderAr'>Company Name</span>" نوافق على دعم برنامج طلاب والالتزام بالشروط أدناه.<br><br>
@@ -317,17 +259,6 @@ function toggleTerms() {
   const content = document.getElementById('termsContent');
   content.style.display = content.style.display === 'grid' ? 'none' : 'grid';
 }
-
-// Auto-update company name in Terms & Conditions
-const companyInput = document.getElementById('company_name');
-const companyPlaceholder = document.getElementById('companyNamePlaceholder');
-const companyPlaceholderAr = document.getElementById('companyNamePlaceholderAr');
-
-companyInput.addEventListener('input', () => {
-  const name = companyInput.value.trim() || 'Company Name';
-  companyPlaceholder.textContent = name;
-  companyPlaceholderAr.textContent = name;
-});
 </script>
 </body>
 </html>
