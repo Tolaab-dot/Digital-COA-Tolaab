@@ -42,23 +42,23 @@ body {
   filter: blur(2px);
 }
 
-/* Form Card */
+/* 🔹 Form Card */
 .form-card {
   width: 100%;
   max-width: 950px;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: var(--radius-xl);
-  padding: 40px 36px 50px 36px;
+  padding: 40px 28px 50px;
   box-shadow: 0 10px 50px rgba(95, 46, 237, 0.25);
   position: relative;
   z-index: 10;
   backdrop-filter: blur(12px);
 }
 
-/* Logo */
+/* 🔹 Logo */
 .logo {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   margin: 0 auto 20px;
 }
 .logo img {
@@ -67,13 +67,14 @@ body {
   object-fit: contain;
 }
 
-/* Titles */
+/* 🔹 Titles */
 h1 {
   text-align: center;
-  font-size: 52px;
+  font-size: 46px;
   font-weight: 800;
   color: #4011e8;
   margin-bottom: 20px;
+  line-height: 1.2;
 }
 p {
   text-align: center;
@@ -90,7 +91,7 @@ p {
   text-align: center;
 }
 
-/* Inputs */
+/* 🔹 Inputs */
 input, select, .file-input {
   width: 100%;
   padding: 12px 14px;
@@ -106,7 +107,7 @@ input:focus, select:focus {
   box-shadow: 0 0 0 3px rgba(95, 46, 237, 0.2);
 }
 
-/* Buttons */
+/* 🔹 Buttons */
 .btn {
   background: linear-gradient(90deg, var(--background-color-primary), var(--background-color-primary-dark));
   color: white;
@@ -125,7 +126,7 @@ input:focus, select:focus {
   box-shadow: 0 14px 30px rgba(95, 46, 237, 0.4);
 }
 
-/* Terms Section */
+/* 🔹 Terms Section */
 .toggle-section {
   display: none;
   background: #f7f7fb;
@@ -137,7 +138,7 @@ input:focus, select:focus {
   margin-top: 10px;
 }
 
-/* Checkboxes */
+/* 🔹 Checkboxes */
 .checkbox-group {
   display: flex;
   flex-direction: column;
@@ -157,6 +158,30 @@ input:focus, select:focus {
 }
 .checkbox-group label:hover {
   box-shadow: 0 4px 10px rgba(95, 46, 237, 0.1);
+}
+
+/* 🔹 Responsive Design */
+@media (max-width: 768px) {
+  body {
+    padding: 40px 12px;
+  }
+  .form-card {
+    padding: 28px 20px 40px;
+  }
+  h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 18px;
+  }
+  p {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+  video {
+    max-height: 300px !important;
+  }
 }
 </style>
 </head>
