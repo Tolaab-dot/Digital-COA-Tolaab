@@ -85,10 +85,9 @@ p {
   font-weight: 700;
   font-size: 22px;
   color: #4011e8;
-  margin-top: 20px;
-  margin-bottom: 12px;
-  border-left: 5px solid var(--background-color-primary);
-  padding-left: 10px;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 /* Inputs */
@@ -113,11 +112,11 @@ input:focus, select:focus {
   color: white;
   font-size: 16px;
   font-weight: 600;
-  padding: 10px;
+  padding: 12px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 25px;
   transition: transform 0.2s ease, box-shadow 0.3s;
   box-shadow: 0 10px 25px rgba(95, 46, 237, 0.3);
 }
@@ -136,6 +135,28 @@ input:focus, select:focus {
   line-height: 1.6;
   color: #555;
   margin-top: 10px;
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.checkbox-group label:hover {
+  box-shadow: 0 4px 10px rgba(95, 46, 237, 0.1);
 }
 </style>
 </head>
@@ -170,6 +191,7 @@ input:focus, select:focus {
 
     <!-- Form -->
     <form id="coaForm" action="https://formspree.io/f/mdklpbdd" method="POST" enctype="multipart/form-data">
+
       <div class="section-title">تفاصيل الشريك / Partner Details</div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div><label>اسم الشركة / Company Name:</label><input type="text" name="company_name" required></div>
@@ -218,10 +240,23 @@ input:focus, select:focus {
       </div>
 
       <div class="section-title">Terms & Conditions</div>
-      <label class="flex items-center gap-3 bg-white p-3 rounded-lg border cursor-pointer hover:shadow">
-        <input type="checkbox" name="accept_terms" class="checkbox checkbox-primary" required>
-        <span>I accept the Terms & Conditions (<span class="text-primary cursor-pointer" onclick="toggleTerms()">Read</span>)</span>
-      </label>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" name="accept_terms" class="checkbox checkbox-primary" required>
+          <span>I accept the Terms & Conditions (<span class="text-primary cursor-pointer" onclick="toggleTerms()">Read</span>)</span>
+        </label>
+
+        <label>
+          <input type="checkbox" name="marketing_consent" class="checkbox checkbox-primary" required>
+          <span>I confirm marketing files are editable by Tolaab</span>
+        </label>
+
+        <label>
+          <input type="checkbox" name="discount_agreement" class="checkbox checkbox-primary" required>
+          <span>I confirm discount applies in all UAE branches</span>
+        </label>
+      </div>
 
       <div id="termsContent" class="toggle-section grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
         <div>
@@ -250,7 +285,7 @@ input:focus, select:focus {
         </div>
       </div>
 
-      <button type="submit" class="btn w-full">Submit Information</button>
+      <button type="submit" class="btn w-full">Go Next Step</button>
     </form>
   </div>
 
