@@ -139,13 +139,13 @@ input:focus, select:focus {
 }
 
 /* 🔹 Checkboxes */
-.checkbox-group {
+.checkbox-group, .commission-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 15px;
 }
-.checkbox-group label {
+.checkbox-group label, .commission-group label {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -156,7 +156,7 @@ input:focus, select:focus {
   cursor: pointer;
   transition: box-shadow 0.2s;
 }
-.checkbox-group label:hover {
+.checkbox-group label:hover, .commission-group label:hover {
   box-shadow: 0 4px 10px rgba(95, 46, 237, 0.1);
 }
 
@@ -253,13 +253,13 @@ input:focus, select:focus {
       <div class="mb-4"><label>Tax Registration:</label><input type="file" name="tax_registration" class="file-input"></div>
 
       <div class="section-title">Transaction Commission / عمولة المعاملات</div>
-      <div class="flex flex-col gap-2 mb-4">
-        <label class="flex items-center gap-3 bg-white p-3 rounded-lg border cursor-pointer hover:shadow">
-          <input type="radio" name="commission_option" value="option1" class="radio radio-primary" required>
+      <div class="commission-group">
+        <label>
+          <input type="checkbox" name="commission_option" value="option1" class="checkbox checkbox-primary" required>
           <span>First Option: 1499 AED registration + 3% transaction</span>
         </label>
-        <label class="flex items-center gap-3 bg-white p-3 rounded-lg border cursor-pointer hover:shadow">
-          <input type="radio" name="commission_option" value="option2" class="radio radio-primary">
+        <label>
+          <input type="checkbox" name="commission_option" value="option2" class="checkbox checkbox-primary">
           <span>Second Option: Zero upfront, 5% on transactions</span>
         </label>
       </div>
